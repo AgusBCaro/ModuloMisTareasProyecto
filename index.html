@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo de Proyectos - Extensión Solo Mis Tareas</title>
+    <meta name="description"
+        content="Extensión del módulo de proyectos para la visualización restringida de 'Mis Tareas' mediante configuración en Ajustes del Usuario.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome CDN for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-square-poll-vertical"></i>
+                </div>
+                <div class="brand-text">
+                    <h2>TaskFlow Pro</h2>
+                    <span>Módulo Proyectos</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <div class="menu-label">Principal</div>
+                <a href="#" class="nav-item active" id="nav-kanban">
+                    <i class="fa-solid fa-kanban-nodes"></i> Tablero Kanban
+                </a>
+                <a href="#" class="nav-item" id="nav-list">
+                    <i class="fa-solid fa-list-check"></i> Lista de Tareas
+                </a>
+                <a href="#" class="nav-item" id="nav-metrics">
+                    <i class="fa-solid fa-chart-pie"></i> Métricas
+                </a>
+
+                <div class="menu-label">Proyectos</div>
+                <div class="project-list">
+                    <button class="project-item active" data-project="all">
+                        <span class="dot all"></span> Todos los Proyectos
+                    </button>
+                    <button class="project-item" data-project="web">
+                        <span class="dot web"></span> Rediseño Web Portal
+                    </button>
+                    <button class="project-item" data-project="mobile">
+                        <span class="dot mobile"></span> App Móvil v2
+                    </button>
+                    <button class="project-item" data-project="erp">
+                        <span class="dot erp"></span> Integración ERP Odoo
+                    </button>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-settings-sidebar" id="open-settings-sidebar-btn">
+                    <i class="fa-solid fa-gear"></i> Ajustes de Usuario
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Navigation Header -->
+            <header class="top-header">
+                <div class="header-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="search-input" placeholder="Buscar tareas, proyectos o etiquetas...">
+                </div>
+
+                <div class="header-actions">
+                    <!-- Dynamic Filter Badge -->
+                    <div id="active-filter-badge" class="filter-badge inactive">
+                        <i class="fa-solid fa-filter"></i>
+                        <span id="badge-text">Vista General (Todas las tareas)</span>
+                    </div>
+
+                    <!-- User Selector (Simulación de Sesión) -->
+                    <div class="user-switcher-container">
+                        <label for="user-select" class="user-select-label">Usuario Activo:</label>
+                        <select id="user-select" class="user-select">
+                            <option value="1">Carlos Mendoza (Diseñador Lead)</option>
+                            <option value="2">Ana Gómez (Dev Frontend)</option>
+                            <option value="3">Roberto Silva (PM & Dev Backend)</option>
+                            <option value="4">Laura Torrez (QA Tester)</option>
+                        </select>
+                    </div>
+
+                    <!-- Settings Button in Header -->
+                    <button class="btn-icon-setting" id="open-settings-btn" title="Ajustes de Usuario">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span>Ajustes</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Status / Banner Notification -->
+            <div class="filter-banner" id="filter-banner">
+                <div class="banner-content">
+                    <div class="banner-icon">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                    <div class="banner-info">
+                        <h4 id="banner-title">Modo 'Solo Mis Tareas' Activo</h4>
+                        <p id="banner-desc">Estás visualizando únicamente las tareas asignadas a tu cuenta de usuario.
+                        </p>
+                    </div>
+                </div>
+                <button class="btn-toggle-quick" id="quick-toggle-btn">
+                    <i class="fa-solid fa-toggle-on"></i> Desactivar Filtro
+                </button>
+            </div>
+
+            <!-- View Header -->
+            <div class="view-header">
+                <div>
+                    <h1 class="view-title">Tablero de Proyectos</h1>
+                    <p class="view-subtitle" id="view-stats-summary">Cargando métricas de tareas...</p>
+                </div>
+                <div class="view-controls">
+                    <button class="btn-primary" id="add-task-btn">
+                        <i class="fa-solid fa-plus"></i> Nueva Tarea
+                    </button>
+                </div>
+            </div>
+
+            <!-- Kanban Board Container -->
+            <div class="kanban-container" id="kanban-view">
+                <!-- Column: Por Hacer -->
+                <div class="kanban-column" data-status="todo">
+                    <div class="column-header">
+                        <div class="column-title">
+                            <span class="status-indicator todo"></span>
+                            <h3>Por Hacer</h3>
+                        </div>
+                        <span class="task-count" id="count-todo">0</span>
+                    </div>
+                    <div class="task-cards-list" id="list-todo">
+                        <!-- Tasks dynamically injected -->
+                    </div>
+                </div>
+
+                <!-- Column: En Progreso -->
+                <div class="kanban-column" data-status="in_progress">
+                    <div class="column-header">
+                        <div class="column-title">
+                            <span class="status-indicator in_progress"></span>
+                            <h3>En Progreso</h3>
+                        </div>
+                        <span class="task-count" id="count-in_progress">0</span>
+                    </div>
+                    <div class="task-cards-list" id="list-in_progress">
+                        <!-- Tasks dynamically injected -->
+                    </div>
+                </div>
+
+                <!-- Column: En Revisión -->
+                <div class="kanban-column" data-status="in_review">
+                    <div class="column-header">
+                        <div class="column-title">
+                            <span class="status-indicator in_review"></span>
+                            <h3>En Revisión</h3>
+                        </div>
+                        <span class="task-count" id="count-in_review">0</span>
+                    </div>
+                    <div class="task-cards-list" id="list-in_review">
+                        <!-- Tasks dynamically injected -->
+                    </div>
+                </div>
+
+                <!-- Column: Completado -->
+                <div class="kanban-column" data-status="done">
+                    <div class="column-header">
+                        <div class="column-title">
+                            <span class="status-indicator done"></span>
+                            <h3>Completado</h3>
+                        </div>
+                        <span class="task-count" id="count-done">0</span>
+                    </div>
+                    <div class="task-cards-list" id="list-done">
+                        <!-- Tasks dynamically injected -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- List View (Hidden by default) -->
+            <div class="list-view-container hidden" id="list-view">
+                <table class="tasks-table">
+                    <thead>
+                        <tr>
+                            <th>Tarea</th>
+                            <th>Proyecto</th>
+                            <th>Asignado a</th>
+                            <th>Estado</th>
+                            <th>Prioridad</th>
+                            <th>Fecha Límite</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tasks-table-body">
+                        <!-- Rows injected dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL: User Settings (Ajustes del Usuario) -->
+    <div class="modal-overlay hidden" id="settings-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <i class="fa-solid fa-user-gear modal-icon"></i>
+                    <div>
+                        <h3>Ajustes del Usuario</h3>
+                        <span>Configuración de preferencias y reglas de visualización</span>
+                    </div>
+                </div>
+                <button class="btn-close-modal" id="close-settings-modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Active Profile Info -->
+                <div class="user-profile-preview">
+                    <div class="avatar-large" id="modal-user-avatar">CM</div>
+                    <div class="user-details">
+                        <h4 id="modal-user-name">Carlos Mendoza</h4>
+                        <span id="modal-user-role">Diseñador Lead & UX Architect</span>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <!-- Feature Toggle Section -->
+                <div class="setting-item-box">
+                    <div class="setting-info">
+                        <div class="setting-title">
+                            <i class="fa-solid fa-filter text-primary"></i>
+                            <strong>Visualización Restringida de Proyectos</strong>
+                        </div>
+                        <p class="setting-description">
+                            Activa o desactiva la regla para mostrar únicamente las tareas en las que estás formalmente
+                            asignado como colaborador.
+                        </p>
+                    </div>
+
+                    <!-- Prominent Button "Solo Mis tareas" -->
+                    <div class="only-my-tasks-wrapper">
+                        <button type="button" class="btn-solo-mis-tareas" id="btn-solo-mis-tareas">
+                            <i class="fa-solid fa-user-check"></i>
+                            <span id="btn-solo-mis-tareas-label">Solo Mis tareas</span>
+                            <span class="status-pill" id="solo-tasks-status-pill">Inactivo</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="setting-item-toggle mt-4">
+                    <div class="toggle-details">
+                        <span>Interruptor rápido de estado:</span>
+                        <small class="text-muted">Equivalente al campo `only_my_tasks` en res.users</small>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="toggle-only-my-tasks-checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+                <div class="info-alert">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <div>
+                        <strong>Nota de Odoo / ERP:</strong> Este ajuste actualiza el valor del campo
+                        <code>res.users.only_my_tasks</code>. En el servidor Odoo, activa automáticamente la regla de
+                        registro <code>ir.rule</code> sobre el modelo <code>project.task</code>.
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-settings-btn">Cancelar</button>
+                <button class="btn-primary" id="save-settings-btn">
+                    <i class="fa-solid fa-floppy-disk"></i> Guardar Ajustes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Add New Task -->
+    <div class="modal-overlay hidden" id="task-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <i class="fa-solid fa-plus-circle modal-icon"></i>
+                    <div>
+                        <h3>Nueva Tarea</h3>
+                        <span>Crear una tarea en el módulo de proyectos</span>
+                    </div>
+                </div>
+                <button class="btn-close-modal" id="close-task-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="create-task-form">
+                    <div class="form-group">
+                        <label for="task-title">Título de la Tarea</label>
+                        <input type="text" id="task-title" required placeholder="Ej: Implementar vista de mapa en app">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-project">Proyecto</label>
+                            <select id="task-project" required>
+                                <option value="web">Rediseño Web Portal</option>
+                                <option value="mobile">App Móvil v2</option>
+                                <option value="erp">Integración ERP Odoo</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="task-assignee">Asignado a</label>
+                            <select id="task-assignee" required>
+                                <option value="1">Carlos Mendoza</option>
+                                <option value="2">Ana Gómez</option>
+                                <option value="3">Roberto Silva</option>
+                                <option value="4">Laura Torrez</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-priority">Prioridad</label>
+                            <select id="task-priority">
+                                <option value="Alta">Alta</option>
+                                <option value="Media" selected>Media</option>
+                                <option value="Baja">Baja</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="task-duedate">Fecha Límite</label>
+                            <input type="date" id="task-duedate">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-task-btn">Cancelar</button>
+                <button class="btn-primary" id="save-task-btn">
+                    <i class="fa-solid fa-check"></i> Crear Tarea
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Application Logic -->
+    <script src="app.js"></script>
+</body>
+
+</html>

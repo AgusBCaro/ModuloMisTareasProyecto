@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Extensión de la vista de Preferencias de Usuario (Ajustes del Usuario) -->
+        <record id="view_users_form_preferences_only_my_tasks" model="ir.ui.view">
+            <field name="name">res.users.preferences.form.only_my_tasks</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[last()]" position="after">
+                    <group string="Ajustes de Proyectos">
+                        <field name="only_my_tasks" widget="boolean_toggle"/>
+                        <button name="action_toggle_only_my_tasks" 
+                                string="Solo Mis tareas" 
+                                type="object" 
+                                class="btn-primary ms-2"
+                                icon="fa-tasks"
+                                help="Haz clic para alternar el filtro de 'Solo Mis tareas' en el módulo de proyectos"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Extensión de la vista completa de Formulario de Usuarios (Administración) -->
+        <record id="view_users_form_only_my_tasks" model="ir.ui.view">
+            <field name="name">res.users.form.only_my_tasks</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='preferences']" position="inside">
+                    <group string="Configuración de Vista de Proyectos">
+                        <group>
+                            <field name="only_my_tasks" widget="boolean_toggle"/>
+                            <button name="action_toggle_only_my_tasks" 
+                                    string="Solo Mis tareas" 
+                                    type="object" 
+                                    class="btn-secondary"
+                                    icon="fa-filter"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
