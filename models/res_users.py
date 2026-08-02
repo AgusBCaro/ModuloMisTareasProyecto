@@ -7,7 +7,7 @@ class ResUsers(models.Model):
     only_my_tasks = fields.Boolean(
         string="Solo Mis tareas",
         default=False,
-        help="Al activar esta opción, la vista del módulo de proyectos filtrará automáticamente únicamente las tareas asignadas a este usuario."
+        help="Al activar esta opción, se ocultarán todas las vistas y menús del módulo de proyectos (Proyectos, Métricas, Configuración) excepto la vista de 'Mis Tareas'."
     )
 
     def _sync_only_my_tasks_group(self):

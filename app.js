@@ -232,19 +232,31 @@ document.addEventListener('DOMContentLoaded', () => {
             return true;
         });
 
-        // 2. Update Header Banner & Badges
+        // 2. Update Header Banner, Badges & Sidebar Menu Visibility
+        const navMetrics = document.getElementById('nav-metrics');
+        const projectListContainer = document.querySelector('.project-list');
+        const menuLabels = document.querySelectorAll('.menu-label');
+
         if (isFilteredByMyTasks) {
             filterBanner.classList.remove('hidden');
             bannerTitle.textContent = `Modo 'Solo Mis Tareas' Activo (${user.name})`;
-            bannerDesc.textContent = `Mostrando únicamente las tareas asignadas a ${user.name}. Las tareas de otros miembros se ocultan.`;
+            bannerDesc.textContent = `Todas las demás vistas y proyectos se han ocultado. Acceso restringido únicamente a las tareas asignadas a ${user.name}.`;
             quickToggleBtn.innerHTML = `<i class="fa-solid fa-toggle-on"></i> Desactivar Filtro`;
 
             activeFilterBadge.className = 'filter-badge active';
-            badgeText.textContent = `Filtro Activo: Solo Mis Tareas (${user.name})`;
+            badgeText.textContent = `Vistas Restringidas: Solo Mis Tareas (${user.name})`;
+
+            if (navMetrics) navMetrics.style.display = 'none';
+            if (projectListContainer) projectListContainer.style.display = 'none';
+            if (menuLabels.length > 1) menuLabels[1].style.display = 'none';
         } else {
             filterBanner.classList.add('hidden');
             activeFilterBadge.className = 'filter-badge inactive';
             badgeText.textContent = `Vista General (Todas las tareas)`;
+
+            if (navMetrics) navMetrics.style.display = 'flex';
+            if (projectListContainer) projectListContainer.style.display = 'block';
+            if (menuLabels.length > 1) menuLabels[1].style.display = 'block';
         }
 
         // Stats summary

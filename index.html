@@ -248,8 +248,7 @@
                             <strong>Visualización Restringida de Proyectos</strong>
                         </div>
                         <p class="setting-description">
-                            Activa o desactiva la regla para mostrar únicamente las tareas en las que estás formalmente
-                            asignado como colaborador.
+                            Al activar esta opción, se ocultan todas las vistas y menús del módulo de Proyectos (Proyectos generales, Métricas, Configuración) y se permite la navegación únicamente en la vista de <strong>Mis Tareas</strong>.
                         </p>
                     </div>
 
@@ -278,8 +277,7 @@
                     <i class="fa-solid fa-circle-info"></i>
                     <div>
                         <strong>Nota de Odoo / ERP:</strong> Este ajuste actualiza el valor del campo
-                        <code>res.users.only_my_tasks</code>. En el servidor Odoo, activa automáticamente la regla de
-                        registro <code>ir.rule</code> sobre el modelo <code>project.task</code>.
+                        <code>res.users.only_my_tasks</code>. En Odoo, filtra los elementos de menú en <code>ir.ui.menu</code> y oculta todas las vistas del módulo de Proyectos dejando accesible únicamente "Mis Tareas".
                     </div>
                 </div>
             </div>

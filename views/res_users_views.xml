@@ -15,7 +15,7 @@
                                 type="object" 
                                 class="btn-primary ms-2"
                                 icon="fa-tasks"
-                                help="Haz clic para alternar el filtro de 'Solo Mis tareas' en el módulo de proyectos"/>
+                                help="Activar para ocultar todas las vistas del módulo de proyectos excepto 'Mis Tareas'"/>
                     </group>
                 </xpath>
             </field>
